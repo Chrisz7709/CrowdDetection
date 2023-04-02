@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CrowdDataConfig(AppConfig):
+class CrowdObserverConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'crowd_data'
+    name = 'Crowd_Observer'

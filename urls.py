@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from models import views
 from .views import home
 
 

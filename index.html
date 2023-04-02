@@ -25,6 +25,14 @@
         <p>Number of people detected: <span id="num-people"></span></p>
         <img id="uploaded-image" src="" alt="Uploaded Image" style="max-width: 100%;">
     </div>
+    {% for data in crowd_data %}
+    <div>
+        <img src="{{ data.image.url }}" alt="Crowd Image" width="200">
+        <p>People count: {{ data.people_count }}</p>
+        <p>Timestamp: {{ data.timestamp }}</p>
+    </div>
+{% endfor %}
+
 
     <script>
         $('#image-upload-form').on('submit', function (event) {
