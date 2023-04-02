@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crowd Observer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{% static '../static/style.css' %}">
+</head>
+<body>
+    <h1>Crowd Observer</h1>
+    <form id="image-upload-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" required><br><br>
+        <button type="submit">Upload</button>
+    </form>
+    <br>
+    <div id="result" style="display:none;">
+        <h2>Results:</h2>
+        <p>Date: <span id="date-taken"></span></p>
+        <p>Time: <span id="time-taken"></span></p>
+        <p>Number of people detected: <span id="num-people"></span></p>
+        <img id="uploaded-image" src="" alt="Uploaded Image" style="max-width: 100%;">
+    </div>
+
+    <script>
+        $('#image-upload-form').on('submit', function (event) {
+            event.preventDefault();
+
+            let formData = new FormData(event.target);
+            $.ajax({
+                url: '',
+                type: 'POST',
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    $('#result').show();
+                    $('#num-people').text(data.num_people);
+                    $('#time-taken').text(data.time_taken);
+                    $('#date-taken').text(data.date_taken);
+                }
+            });
+        });
+
+        $('input[type="file"]').on('change', function () {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $('#uploaded-image').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(this.files[0]);
+            const tableBody = document.getElementById('crowd-data-table');
+            tableBody.innerHTML = '';
+            data['crowd_data'].forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row['people_count']}</td><td>${row['date_taken']}</td>`;
+                tableBody.appendChild(tr);
+        });
+    </script>
+</body>
+</html>
